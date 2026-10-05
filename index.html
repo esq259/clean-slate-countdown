@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Clean Slate Protocol</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 60mm;
+    height: 25mm;
+    min-width: 60mm;
+    min-height: 25mm;
+    max-width: 60mm;
+    max-height: 25mm;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  body {
+    font-family: Inter, "Helvetica Neue", Arial, "Noto Sans KR", sans-serif;
+  }
+
+  .widget {
+    width: 60mm;
+    height: 25mm;
+    border: 0.25mm solid #d6d6d6;
+    border-radius: 1.5mm;
+    background: #ffffff;
+    color: #111111;
+    padding: 3.2mm 3.5mm 2.9mm;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .top {
+    font-size: 2.6mm;
+    line-height: 1;
+    font-weight: 400;
+    color: #666666;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+  }
+
+  .time {
+    margin-top: 2.2mm;
+    font-size: 4.4mm;
+    line-height: 1;
+    font-weight: 650;
+    letter-spacing: -0.055em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .bottom {
+    margin-top: 2.2mm;
+    font-size: 2.35mm;
+    line-height: 1;
+    font-weight: 400;
+    color: #666666;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+  <div class="widget" role="timer" aria-live="off">
+    <div class="top">2026년 12월 5일까지</div>
+    <div class="time" id="time">00일 00시간 00분 00.00초</div>
+    <div class="bottom">/Clean Slate Protocol</div>
+  </div>
+
+<script>
+(() => {
+  const target = new Date("2026-12-05T00:00:00+09:00").getTime();
+  const el = document.getElementById("time");
+  const pad2 = n => String(n).padStart(2, "0");
+
+  function render() {
+    const now = Date.now();
+    let diff = Math.max(0, target - now);
+
+    const days = Math.floor(diff / 86400000);
+    diff %= 86400000;
+
+    const hours = Math.floor(diff / 3600000);
+    diff %= 3600000;
+
+    const minutes = Math.floor(diff / 60000);
+    diff %= 60000;
+
+    const seconds = diff / 1000;
+
+    el.textContent =
+      `${String(days).padStart(2, "0")}일 ` +
+      `${pad2(hours)}시간 ` +
+      `${pad2(minutes)}분 ` +
+      `${seconds.toFixed(2).padStart(5, "0")}초`;
+
+    if (now < target) requestAnimationFrame(render);
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
